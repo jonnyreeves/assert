@@ -104,6 +104,9 @@
 	function AssertionBuilder (value, name) {
 		this.value = value;
 		this.name = name;
+        
+        this.containsKey = this.containsKeys;
+        this.containsMethod = this.containsMethods;
 	}
     
 	AssertionBuilder.prototype = {
@@ -123,7 +126,7 @@
 			a.containsKeys(this.value, this.name, keys);
 			return this;
 		},
-        containsMethod: function (requiredMethodNames) {
+        containsMethods: function (requiredMethodNames) {
             a.containsMethod(this.value, this.name, requiredMethodNames);
             return this;
         }
