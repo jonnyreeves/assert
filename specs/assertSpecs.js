@@ -144,8 +144,75 @@ describe("assert", function () {
             }).toThrow("myObj is missing required key bar");
         });
         
+        it("should allow the required keys to be a single string value", function () { 
+            expect(function() { 
+                assert.containsKeys(source, "keyB");
+            }).not.toThrow();
+        });        
+        
+        it("should allow the required keys to be a space delimited string", function () { 
+            expect(function() { 
+                assert.containsKeys(source, "keyA keyB keyC");
+            }).not.toThrow();
+        });
+        
+        it("should provide a containsKey alias", function () { 
+            expect(assert.containsKey).toEqual(assert.containsKeys);
+        });        
+        
     });
     
+    describe("containsMethod", function () { 
+        var obj;
+        
+        beforeEach(function () { 
+            obj = {
+                sayHi: function () { },
+                walk : function () { },
+                name: "Dave"
+            };
+        });
+        
+        it("should throw an AssertionError if the supplied object doesn't contain the required method", function () { 
+            expect(function () { 
+                assert.containsMethod(obj, 'sayBye');
+            }).toThrow();
+        });
+        
+        it("should not throw an AssertionError if the supplied contains the required method", function () { 
+            expect(function () { 
+                assert.containsMethod(obj, 'sayHi');
+            }).not.toThrow();
+        });        
+        
+        it("should allow more than one required method to be supplied as an Array", function () { 
+            expect(function () { 
+                assert.containsMethod(obj, [ 'sayHi', 'walk' ]);
+            }).not.toThrow();
+        });
+        
+        it("should allow more than one required method to be supplied as a space seperated string", function () { 
+            expect(function () { 
+                assert.containsMethod(obj, 'sayHi walk');
+            }).not.toThrow();
+        });        
+        
+        it("should ensure that the object's propery is a function", function () { 
+            expect(function () { 
+                assert.containsMethod(obj, 'name')
+            }).toThrow();
+        });
+        
+        it("should provide a descriptive error message if a name value is supplied", function () { 
+            expect(function () { 
+                assert.containsMethod(obj, "myObj", 'sayBye');
+            }).toThrow("myObj is missing required method sayBye");
+        });
+        
+        it("should provide a containsMethods alias", function () { 
+            expect(assert.containsMethods).toEqual(assert.containsMethod);
+        });
+    });
     
     describe("that", function () { 
         
